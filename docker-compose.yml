@@ -12,7 +12,7 @@ services: #Containers to run
 
   kafka-test: # Second container (Service)
     image: confluentinc/cp-kafka:latest #latest version of kafka docker image
-    container_name: kafka-test #Name of the container
+    container_name: happiness-score #Name of the container
     depends_on:
       - zookeeper #depends on zookeeper so kafka will not start until zookeeper service is up and running
     environment:
