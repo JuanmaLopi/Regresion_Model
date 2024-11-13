@@ -35,7 +35,7 @@ connection = psycopg2.connect(
     user=db_user,
     password=db_password,
     host=db_host,
-    port=db_port
+    port=3000
 )
 
 # Crear un cursor para ejecutar las operaciones SQL
@@ -43,7 +43,7 @@ cursor = connection.cursor()
 
 # Crear la tabla en PostgreSQL si no existe, incluyendo las nuevas columnas al final
 create_table_query = """
-    CREATE TABLE IF NOT EXISTS predictions (
+    CREATE TABLE IF NOT EXISTS happiness_score_prediction (
         Country VARCHAR(255),
         Year INT,
         Economy_GDP_per_Capita FLOAT,
@@ -59,7 +59,7 @@ create_table_query = """
 # Ejecutar la consulta para crear la tabla
 cursor.execute(create_table_query)
 connection.commit()
-print("Tabla 'predictions' creada o ya existe.")
+print("Tabla 'happiness_score_prediction' creada o ya existe.")
 
 # Contador de filas procesadas
 rows_processed = 0
@@ -92,7 +92,7 @@ for message in consumer:
         
         # Insertar los resultados en la base de datos PostgreSQL
         insert_query = """
-            INSERT INTO predictions (Country, Year, Economy_GDP_per_Capita, Social_support, 
+            INSERT INTO happiness_score_prediction (Country, Year, Economy_GDP_per_Capita, Social_support, 
                                            Health_Life_Expectancy, Freedom, Trust_Government_Corruption, 
                                            Generosity, Happiness_Score, Predicted_Happiness_Score)
             VALUES %s
