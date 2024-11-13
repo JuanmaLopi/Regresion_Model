@@ -2,111 +2,110 @@
 
 ---
 
-Este proyecto busca anticipar los índices de felicidad en varios países mediante el uso de técnicas de aprendizaje automático. Para lograrlo, se aplican análisis exploratorios de datos, selección de variables clave, transmisión de datos en tiempo real a través de Kafka y almacenamiento de información en una base de datos PostgreSQL.
+This project aims to predict happiness indexes in various countries using machine learning techniques. To achieve this, exploratory data analysis, feature selection, real-time data streaming through Kafka, and information storage in a PostgreSQL database are applied.
+
 
 ---
 
-## Tabla de Contenidos
+## Table of Contents
+
 
 ---
 
-1. [DESCRIPCIÓN DEL PROYECTO](#1-descripción-del-proyecto)
-2. [REQUERIMIENTOS](#2-requerimientos)
-3. [ESTRUCTURA DEL PROYECTO](#3-estructura-del-proyecto)
-4. [CONFIGURACIÓN DEL ENTORNO](#4-configuración-del-entorno)
-5. [PROCESAMIENTO DE DATOS](#5-procesamiento-de-datos)
-6. [ENTRENAMIENTO DEL MODELO](#6-model-training)
-7. [IMPLEMENTACIÓN DE KAFKA](#7-implementación-de-kafka)
-8. [FUNCIONAMIENTO DE KAFKA](#8-funcionamiento-de-kafka)
-9. [EVIDENCIAS](#9-funcionamiento-de-la-base-de-datos)
+1. [PROJECT DESCRIPTION](#1-project-description)
+2. [REQUIREMENTS](#2-requirements)
+3. [PROJECT STRUCTURE](#3-project-structure)
+4. [ENVIRONMENT SETUP](#4-environment-setup)
+5. [DATA PROCESSING](#5-data-processing)
+6. [MODEL TRAINING](#6-model-training)
+7. [KAFKA IMPLEMENTATION](#7-kafka-implementation)
+8. [KAFKA OPERATION](#8-kafka-operation)
+9. [EVIDENCES](#9-database-operation)
 10. [CONCLUSIÓN](#10-conclusión)
-11. [AUTORES](#11-autores)
+11. [AUTHORS](#11-authors)
 ---
 
-### 1. Descripción del Proyecto <a name="descripcion-del-proyecto"></a>
+### 1. Project Description <a name="project-description"></a>
 
-Este proyecto se centra en estimar el nivel de felicidad en distintos países utilizando factores como el ingreso per cápita, la salud de la población, la libertad individual, y otros elementos. Para llevarlo a cabo:
+This project focuses on estimating the happiness level in different countries using factors such as income per capita, population health, individual freedom, and other elements. To carry it out:
 
-- Se analizan datos de felicidad recopilados a lo largo de varios años.
-- Se realiza una selección de las variables más significativas.
-- Se entrena un modelo basado en regresión.
-- Se implementa Apache Kafka para el envío en tiempo real de las predicciones generadas.
-- Se almacena los resultados obtenidos en una base de datos PostgreSQL.
+- Happiness data collected over several years is analyzed.
+- The most significant variables are selected.
+- A regression model is trained.
+- Apache Kafka is implemented to send real-time predictions.
+- The results are stored in a PostgreSQL database.
 
 ---
 
-### 2. Requerimientos <a name="requerimientos"></a>
+### 2. Requirements <a name="requirements"></a>
 
-Para realizar el proyecto, se utilizaron diferentes herramientas que ayudaron tanto en el procesamiento de datos, como en el 
-entrenamiento de modelo de regresion, el streaming de datos en tiempo real y el almacenamiento de los datos necesarios. A
-continuación se explican las herramientas usadas para este proyecto:
+For this project, various tools were used to assist with data processing, regression model training, real-time data streaming, and storing the necessary data. Below are the tools used in this project:
 
-- **Python 3.8 o superior** (Lenguaje en el que esta escritó la mayoria del codigo)
-- **Docker Desktop** (Aplicación que nos ayuda a Orquestar y nos ayuda con el funcionamiento de Kafka)
-- **Apache Kafka** (Nos ayuda a hacer lo que es el Streaming de Datos)
-- **PostgreSQL** (Base de datos en la cual se almacenaron las predicciones)
-- **Pandas** (herramienta que nos ayuda con el procesamiento de datos)
-- **Scikit-learn** (Libreria usada para todo lo relacionado con el entrenamiento del modelo)
-- **Matplotlib, Seaborn** (Librerias usadas para realizar graficos de correlación)
-- **Psycopg2** (Librería que nos ayuda para poder subir los datos a PostgreSQL)
-- **Dotenv** (Libreria usada para el uso de las variables de entorno)
+- Python 3.8 or higher (Programming language used for most of the code)
+- Docker Desktop (Application to orchestrate and run Kafka containers)
+- Apache Kafka (Used for data streaming)
+- PostgreSQL (Database where predictions were stored)
+- Pandas (Library used for data processing)
+- Scikit-learn (Library used for model training)
+- Matplotlib, Seaborn (Libraries used for correlation charts)
+- Psycopg2 (Library for connecting to PostgreSQL)
+- Dotenv (Library used for environment variables)
 
-Para instalar todas las librerias necesarias, introduce el siguiente comando:
+To install all required libraries, use the following command:
 
 ```bash
 pip install kafka-python pandas scikit-learn matplotlib seaborn psycopg2 python-dotenv
 ```
 
-Todas las dependencias usadas están en el archivo requirements.txt.
+All dependencies used are listed in the **requirements.txt** file.
 
 ---
 
-### 3. Estructura del Proyecto <a name="estructura-del-proyecto"></a>
+### 3. Project Structure <a name="project-structure"></a>
 
-La estructura del proyecto se organiza de la siguiente manera:
+The project is structured as follows:
 
 ```plaintext
 ├── data
-│   ├── 2015.csv             # Datos sin procesar del año 2015
-│   ├── 2016.csv             # Datos sin procesar del año 2016
-│   ├── 2017.csv             # Datos sin procesar del año 2017
-│   ├── 2018.csv             # Datos sin procesar del año 2018
-│   ├── 2019.csv             # Datos sin procesar del año 2019
-│   └── model_data           # Datos de entrenamiento del modelo
+│   ├── 2015.csv             # Raw data for 2015
+│   ├── 2016.csv             # Raw data for 2016
+│   ├── 2017.csv             # Raw data for 2017
+│   ├── 2018.csv             # Raw data for 2018
+│   ├── 2019.csv             # Raw data for 2019
+│   └── model_data           # Model training data
 │
 ├── Kafka
-│   ├── kafka_producer.py       # Código para el productor de Kafka
-│   └── kafka_consumer.py       # Código para el consumidor de Kafka
+│   ├── kafka_producer.py       # Kafka producer code
+│   └── kafka_consumer.py       # Kafka consumer code
 │
 ├── Model
-│   └── Regression_Model.pkl     # Modelo de regresión
+│   └── Regression_Model.pkl     # Regression model
 │
-├── NoteBooks
-│   ├── EDA.ipynb                  # Análisis exploratorio de datos
-│   └── model_training.ipynb       # Entrenamiento del modelo
+├── Notebooks
+│   ├── EDA.ipynb                  # Exploratory data analysis
+│   └── model_training.ipynb       # Model training
 │
 ├── src
-│   ├── EDA.py                  # Scripts para análisis exploratorio de datos
-│   └── model_training.py       # Scripts para entrenamiento del modelo
+│   ├── EDA.py                  # Scripts for exploratory data analysis
+│   └── model_training.py       # Scripts for model training
 │
-├── .gitignore               # Archivo de configuración para ignorar archivos en Git
-├── docker-compose.yml       # Archivo de configuración de Docker Compose
-├── README.md                # Archivo de documentación principal
-└── requirements.txt         # Listado de dependencias del proyecto
+├── .gitignore               # Git ignore configuration file
+├── docker-compose.yml       # Docker Compose configuration file
+├── README.md                # Main documentation file
+└── requirements.txt         # List of project dependencies
 ```
 
 #### Create Virtual Environment
 
-Vamos a Hacer la creación de un ambiente virtual para facilitar mucho mas el funcionamiento del codigo.
+To create a virtual environment to make the code run more efficiently:
 
-Para crearlo, abre una nueva terminal en Visual Studio Code y corre el siguiente codigo:
+Open a new terminal in Visual Studio Code and run the following code:
 
 ```bash
 python -m venv .venv
 ```
 
-Esto creara un ambiente virtual llamado `.venv` en la raiz del proyecto.
-Para activarlo, corre el siguiente codigo en el bash de Visual Studio Code
+This will create a virtual environment called .venv in the project root. To activate it, run the following command in the Visual Studio Code bash:
 
 ```bash
 source .venv/scripts/activate
@@ -114,66 +113,64 @@ source .venv/scripts/activate
 
 ---
 
-### 4. Configuración del Entorno <a name="configuracion-del-entorno"></a>
+### 4. Environment Setup <a name="environment-setup"></a>
 
-Para la conexión con la base de datos, en nuestro caso PostgreSQL, hay ciertos parametros que se deben definir, que nos 
-permiten tener la conexión con esta, por lo cual, en la raiz del proyecto se tiene que crear un archivo *.env*, donde guardaremos
-nuestras variables de entorno, las cuales son las credenciales que se usan para conectarse a PostgreSQL.
+To connect to the database, in this case, PostgreSQL, there are certain parameters that need to be defined, which allow us to establish the connection. Therefore, a .env file should be created in the project root, where we will store our environment variables, which include the credentials used to connect to PostgreSQL.
 
-DB_NAME= Nombre_De_Tu_Base_De_Datos
-DB_USER= Nombre_De_Tu_Usuario
-DB_PASSWORD= Contraseña_De_Tu_Base_De_Datos
-DB_HOST= Host_De_La_Base_De_Datos       # Por lo general este viene definido como LocalHost
-DB_PORT= Puerto_De_La_Base_De_Datos     # El puerto predefinido de PostgreSQL es el 5432
+DB_NAME= Your_Database_Name
+DB_USER= Your_Username
+DB_PASSWORD= Your_Database_Password
+DB_HOST= Database_Host       # Typically, this is defined as LocalHost
+DB_PORT= Database_Port       # The default port for PostgreSQL is 5432
 
 ---
 
-### 5. Procesamiento de Datos <a name="procesamiento-de-datos"></a>
+### 5. Data Processing <a name="data-processing"></a>
 
-Para el procesamiento de datos, se utilizará la biblioteca **Pandas**, que es una de las bibliotecas más utilizadas en Python para el análisis de datos.
+For data processing, the Pandas library is used, which is one of the most widely used libraries in Python for data analysis.
 
-Al momento de hacer el procesamiento de datos, lo que principalmente hacemos, es realizar una limpieza de datos, como borrar datos irrelevantes que no nos servirán para el entremiento del modelo, estandarización del nombre de columnas para que al final todos tengan el mismo nombre, se hace un grafico de correlación para ver las variables que más importan en el entrenamiento del modelo y por ultimo se hace una concatenación de los datos, el cual nos va a dar el csv final que usaremos para entrenar el modelo.
+During the data processing, the main tasks are cleaning the data by removing irrelevant entries, standardizing column names, generating a correlation chart to identify the most important variables for model training, and finally concatenating the data to create the final CSV file used for training the model.
 
-Para hacer este procesamiento de datos, se puede correr el documento llamado EDA dentro de la carpeta src, el cual tiene todo el codigo para hacer el procesamiento de los datos, para correrlo puedes usar el siguiente comando:
+To process the data, you can run the EDA file located in the src folder, which contains all the code for data processing. You can execute it with the following command:
 
 ```bash
 python src/EDA.py
 ```
 
-Y si quieres saber más como funciona el paso a paso del procesamiento de los datos, lo puedes ver en el Notebook diseñado principalmente para esta tarea, este está ubicado en la carpeta de NoteBooks, y tiene el nombre de 000_EDA.ipynb (**NoteBooks/000_EDA.ipynb**)
+If you'd like to learn more about how the data processing works step by step, you can check the notebook designed for this task, which is located in the Notebooks folder and is named 000_EDA.ipynb (Notebooks/000_EDA.ipynb). 
 
-este tiene la misma funcionalidad, pero con su explicación de cada codigo.
+This notebook serves the same purpose but includes explanations for each piece of code.
 
 ---
 
 ### 6. Model Training <a name="model-training"></a>
 
-Abre el notebook *Notebooks/001_Model_Training.ipynb* y sigue los pasos para:
+Open the notebook Notebooks/001_Model_Training.ipynb and follow the steps to:
 
-- Seleccionar las variables más relevantes.
-- Entrenar un modelo de regresión para estimar la puntuación de felicidad.
-- Evaluar el rendimiento del modelo, asegurándote de que el R² sea de al menos 0.80.
-- Guardar el modelo entrenado en la ruta models/final_happiness_model.pkl.
+- Select the most relevant features.
+- Train a regression model to predict the happiness score.
+- Evaluate the model performance, ensuring that the R² is at least 0.80.
+- Save the trained model at Model/Regression_Model.pkl.
 
 ---
 
-### 7. Implementación de Kafka <a name="implementacion_de_kafka"></a>
+### 7. Kafka Implementation <a name="kafka-implementation"></a>
 
-Ya que Kafka lo implementamos con Docker, lo primero que tenemos que hacer es abrir nuestra aplicación de Docker Desktop para que se pueda poner a correr los contenedores de Kafka.
+Since Kafka is implemented using Docker, the first step is to open the Docker Desktop application to start the Kafka containers.
 
-Una vez que tengamos nuestra aplicación abierta, ejecutamos en una nueva terminal el siguiente codigo que levanta los contenedores y los pone a funcionar:
+Once the application is open, execute the following code in a new terminal to start the containers:
 
 ```bash
 docker-compose up -d
 ```
 
-Para verificar que los contenedores ya están funcionando, en otra terminal, ejecutamos el siguietne codigo:
+To check if the containers are running, use the following command in another terminal:
 
 ```bash
 docker ps
 ```
 
-Ahora ejecutamos el siguiente comando para crear un topic llamado **regression_model**:
+Now, execute the following command to create a topic named **regression_model**:
 
 ```bash
 docker exec -it happiness-score kafka-topics \
@@ -185,7 +182,7 @@ docker exec -it happiness-score kafka-topics \
 
 ```
 
-Ahora nos aseguramos que el topic fue creado con este comando:
+To verify that the topic was created, use this command:
 
 ```bash
 docker exec -it happiness-score kafka-topics \
@@ -195,48 +192,48 @@ docker exec -it happiness-score kafka-topics \
 
 ---
 
-### 8. Funcionamiento de Kafka <a name="funcionamiento-de-kafka"></a>
+### 8. Kafka Operation <a name="kafka-operation"></a>
 
-Una vez que los contenedores esten funcionando con su topic ya creado, pasamos al siguiente paso, que es correr el producer y el consumer para hacer el streaming de los datos.
+Once the containers are running with the topic created, proceed to the next step, which is running the producer and the consumer to stream the data.
 
-Por un lado, el producer se encarga de enviar los datos de prueba que se usaron para el entrenamiento del modelo, el cual 
-corresponder al ultimo 30% del archivo *data/Model_Data.csv*.
+On one side, the producer is responsible for sending the test data used for model training, corresponding to the last 30% of the data/Model_Data.csv file.
 
-Por otro lado, el consumer tiene la función de recibir esos datos que le envia el producer, pero además de esto recibe el dato que predice el modelo que fue entrenado y va y los guarda directamente en nuestra base de datos PostgreSQL, donde le codigo crea e inserta los datos en la tabla que esta definida.
+On the other side, the consumer receives the data sent by the producer and also receives the predicted value from the trained model. It then stores this data directly in the PostgreSQL database, where the code creates and inserts the data into the defined table.
 
-Para correr la parte del producer, en un nuevo git bash, se corre el siguiente codigo:
+To run the producer, execute the following code in a new Git bash:
 
 ```bash
 python Kafka/kafka_producer.py
 ```
 
-Mientras que para la parte del consumer, en otra git bash, se corre simultaneamente el siguiente codigo:
+At the same time, run the following code for the consumer in another Git bash:
 
 ```bash
 python Kafka/kafka_consumer.py
 ```
 
-Cabe aclarar que es mejor que corras primero el consumer, y luego el producer, para asi darle tiempo al programa de crear la tabla.
+It is better to run the consumer first and then the producer to give the program time to create the table.
 
 ---
 
-### 9. Funcionamiento de la base de datos <a name="funcionamiento-de-la-base-de-datos"></a>
+### 9. Database Operation <a name="database-operation"></a>
 
-Una vez que ya se corrio todo, lo que nos queda es comprobar que el codigo realmente funcionó y nos guardo la información en nuestra base de datos PostgreSQL.
+Once everything has run, verify that the code worked correctly and stored the data in the PostgreSQL database.
 
-Para verificar esto, nos dirigimos a donde creamos nuestra base de datos en PostgreSQL, creamos un nuevo Script y corremos el siguiente comando:
+To check this, navigate to where you created the PostgreSQL database, create a new script, and run the following command:
 
 ```bash
 SELECT * FROM happiness_score_prediction;
 ```
 
-Este codigo debe devolver un total de 230 datos, en donde se encuentran los datos de prueba y el *Happiness Score* que se iba a predecir.
+This code should return a total of 230 records, containing the test data and the predicted Happiness Score.
 
 ### 10. Conclusión <a name="conclusion"></a>
-Este proyecto proporciona una solución completa para predecir y almacenar puntajes de felicidad a nivel global, integrando Machine Learning y sistemas de transmisión en tiempo real. La arquitectura construida es escalable y permite análisis continuos en base a datos actualizados de felicidad.
 
-### 11. Autores
+This project provides a complete solution to predict and store global happiness scores, integrating Machine Learning and real-time streaming systems. The architecture built is scalable and allows continuous analysis based on updated happiness data.
 
-- **Juan Manuel Lopez Rodriguez** - *Desarrollador Principal* - [juan_m.lopez_r@uao.edu.co](mailto:juan_m.lopez_r@uao.edu.co)
+### 11. Authors <a name="authors"></a>
 
-En este README.md se especifico la totalidad del proyecto, desde el punto inicial de procesamiento de los datos, hasta el punto final de la verificación de nuestro modelo predictivo.
+- Juan Manuel Lopez Rodriguez - Lead Developer - juan_m.lopez_r@uao.edu.co
+
+This README.md outlines the entire project, from the initial data processing to the final verification of our predictive model.

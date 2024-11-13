@@ -2,20 +2,19 @@ from kafka import KafkaProducer
 import pandas as pd
 import json
 
-# Configurar el Kafka producer
+# Configure the Kafka producer
 producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
-# Cargar los datos
+# Load the data
 data = pd.read_csv('data/Model_Data.csv')
 
-# Obtener el último 30% de las filas
-last_30_percent = data.tail(int(len(data) * 0.3))  # Último 30% de las filas
+# Get the last 30% of the rows
+last_30_percent = data.tail(int(len(data) * 0.3))  # Last 30% of the rows
 
-# Enviar las filas al Kafka Consumer
+# Send the rows to the Kafka Consumer
 for index, row in last_30_percent.iterrows():
-    message = row.to_dict()  # Convertir cada fila en un diccionario
-    producer.send('regression_model', message)  # Enviar al Kafka topic
-    producer.flush()  # Asegurarse de que se haya enviado el mensaje
+    message = row.to_dict()  # Convert each row into a dictionary
+    producer.send('regression_model', message)  # Send to the Kafka topic
+    producer.flush()  # Ensure the message is sent
 
-print(f"Enviadas {len(last_30_percent)} filas al Kafka consumer.")
-
+print(f"Sent {len(last_30_percent)} rows to the Kafka consumer.")
