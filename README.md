@@ -22,3 +22,26 @@ Este proyecto se centra en estimar el nivel de felicidad en distintos países ut
 - Se entrena un modelo basado en regresión.
 - Se implementa Apache Kafka para el envío en tiempo real de las predicciones generadas.
 - Se almacena los resultados obtenidos en una base de datos PostgreSQL.
+
+---
+
+### 2. Requerimientos <a name="requerimientos"></a>
+Para realizar el proyecto, se utilizaron diferentes herramientas que ayudaron tanto en el procesamiento de datos, como en el 
+entrenamiento de modelo de regresion, el streaming de datos en tiempo real y el almacenamiento de los datos necesarios. A
+continuación se explican las herramientas usadas para este proyecto:
+
+- **Python 3.8 o superior** (Lenguaje en el que esta escritó la mayoria del codigo)
+- **Docker Desktop** (Aplicación que nos ayuda a Orquestar y nos ayuda con el funcionamiento de Kafka)
+- **Apache Kafka** (Nos ayuda a hacer lo que es el Streaming de Datos)
+- **PostgreSQL** (Base de datos en la cual se almacenaron las predicciones)
+- **Pandas** (herramienta que nos ayuda con el procesamiento de datos)
+- **Scikit-learn** (Libreria usada para todo lo relacionado con el entrenamiento del modelo)
+- **Matplotlib, Seaborn** (Librerias usadas para realizar graficos de correlación)
+- **Psycopg2** (Librería que nos ayuda para poder subir los datos a PostgreSQL)
+- **Dotenv** (Libreria usada para el uso de las variables de entorno)
+
+Para instalar todas las librerias necesarias, introduce el siguiente comando:
+
+```bash
+pip install kafka-python pandas scikit-learn matplotlib seaborn psycopg2 python-dotenv
+```
