@@ -11,6 +11,7 @@ Este proyecto busca anticipar los índices de felicidad en varios países median
 ---
 
 1. [DESCRIPCIÓN DEL PROYECTO](#1-descripción-del-proyecto)
+2. [REQUERIMIENTOS](#2-requerimientos)
 
 ---
 
@@ -45,3 +46,32 @@ Para instalar todas las librerias necesarias, introduce el siguiente comando:
 ```bash
 pip install kafka-python pandas scikit-learn matplotlib seaborn psycopg2 python-dotenv
 ```
+
+Todas las dependencias usadas están en el archivo requirements.txt.
+
+
+## 3. Estructura del Proyecto <a name="estructura-del-proyecto"></a>
+
+La estructura del proyecto se organiza de la siguiente manera:
+
+```plaintext
+├── data
+│   ├── raw                 # Datos sin procesar
+│   ├── processed           # Datos después de preprocesamiento
+│   └── external            # Datos externos o adicionales
+│
+├── notebooks               # Jupyter Notebooks de análisis y experimentación
+│
+├── src
+│   ├── data                # Scripts para manipulación y preparación de datos
+│   ├── models              # Scripts para entrenar y evaluar modelos
+│   └── utils               # Funciones de utilidad y auxiliares
+│
+├── tests                   # Pruebas automatizadas del proyecto
+│
+├── config                  # Configuración y parámetros del proyecto
+│
+├── README.md               # Archivo de documentación principal
+│
+└── requirements.txt        # Listado de dependencias del proyecto
+
