@@ -120,6 +120,7 @@ for message in consumer:
 
         time.sleep(1)
 
+
 # Confirmation when all data has been processed
 if rows_processed == total_rows:
     print("All data has been saved successfully.")
