@@ -1,6 +1,7 @@
 from kafka import KafkaProducer
 import pandas as pd
 import json
+import time
 
 # Configure the Kafka producer
 producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda v: json.dumps(v).encode('utf-8'))
@@ -16,5 +17,7 @@ for index, row in last_30_percent.iterrows():
     message = row.to_dict()  # Convert each row into a dictionary
     producer.send('regression_model', message)  # Send to the Kafka topic
     producer.flush()  # Ensure the message is sent
+
+    time.sleep(1)
 
 print(f"Sent {len(last_30_percent)} rows to the Kafka consumer.")
