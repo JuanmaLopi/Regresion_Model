@@ -117,7 +117,7 @@ for message in consumer:
         
         # Clear the accumulated predictions to continue with the next set
         predictions = []
-
+        
         time.sleep(1)
 
 

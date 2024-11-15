@@ -20,6 +20,7 @@ for index, row in last_30_percent.iterrows():
 
     time.sleep(1)
 
-
-
 print(f"Sent {len(last_30_percent)} rows to the Kafka consumer.")
+
+
+
